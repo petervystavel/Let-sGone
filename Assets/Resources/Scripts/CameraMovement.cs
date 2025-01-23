@@ -46,7 +46,7 @@ public class CameraMovement : MonoBehaviour
 
     void Update()
     {
-        GameObject player = Utils.GetPlayer();
+        GameObject player = GameManager.Player;
         if (player == null )
 			return;
 
@@ -97,7 +97,7 @@ public class CameraMovement : MonoBehaviour
 
     private void UpdateTransform()
     {
-        GameObject oPlayer = Utils.GetPlayer();
+        GameObject oPlayer = GameManager.Player;
         if (oPlayer == null)
             return;
 

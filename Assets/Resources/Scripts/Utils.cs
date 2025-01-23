@@ -31,9 +31,8 @@ public class Utils
         return -end * value * (value - 2) + start;
     }
 
-    public static GameObject GetPlayer()
+    public static bool IsNaN(ref Vector3 oVector)
     {
-        return GameObject.Find("Player");
+        return float.IsNaN(oVector.x) || float.IsNaN(oVector.y) || float.IsNaN(oVector.z);
     }
-
 }
