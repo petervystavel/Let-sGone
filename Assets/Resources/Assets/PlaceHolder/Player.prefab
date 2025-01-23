@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5296735472826694097}
+  - component: {fileID: 2325787197782843782}
   - component: {fileID: 181571929487574544}
   - component: {fileID: 8163556080794021321}
-  - component: {fileID: 2325787197782843782}
   - component: {fileID: 1830766190938232698}
   m_Layer: 0
   m_Name: Laser
@@ -35,6 +35,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2760839395420691700}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2325787197782843782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 994456354808872730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0d0a6e7b2ddbfe47a3e4fa421436619, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Duration: 1
+  Damage: 1
+  Intensity: 0
+  ContinueDamage: 1
+  DamageInterval: 0.1
+  SensibilityType: 2
 --- !u!33 &181571929487574544
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -63,7 +81,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d3d331bcacc968f40ba84699b142ed14, type: 2}
+  - {fileID: 9003353085549565770, guid: 668273e717697b048b03e5cc6b67eaf3, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -85,23 +103,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2325787197782843782
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 994456354808872730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0d0a6e7b2ddbfe47a3e4fa421436619, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Duration: 1
-  Damage: 1
-  Intensity: 0
-  ContinueDamage: 1
-  DamageInterval: 0.1
 --- !u!136 &1830766190938232698
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -134,10 +135,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 334244783534470737}
+  - component: {fileID: 9061596290211560496}
   - component: {fileID: 2608400633112655387}
   - component: {fileID: 5721691711907906575}
   - component: {fileID: 2424298094938708420}
-  - component: {fileID: 9061596290211560496}
   m_Layer: 0
   m_Name: CAC
   m_TagString: Untagged
@@ -154,12 +155,30 @@ Transform:
   m_GameObject: {fileID: 2271418982096304068}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.668}
-  m_LocalScale: {x: 4, y: 1, z: 3}
+  m_LocalPosition: {x: 0, y: 0, z: 2.82}
+  m_LocalScale: {x: 4, y: 1, z: 6}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2760839395420691700}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9061596290211560496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2271418982096304068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0d0a6e7b2ddbfe47a3e4fa421436619, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Duration: 0.2
+  Damage: 1
+  Intensity: 20
+  ContinueDamage: 0
+  DamageInterval: 0.1
+  SensibilityType: 0
 --- !u!33 &2608400633112655387
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -188,7 +207,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d3d331bcacc968f40ba84699b142ed14, type: 2}
+  - {fileID: -4318571312361772713, guid: e6b28a8631999354c9126f4c0d311807, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -231,23 +250,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &9061596290211560496
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2271418982096304068}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0d0a6e7b2ddbfe47a3e4fa421436619, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Duration: 0.2
-  Damage: 1
-  Intensity: 20
-  ContinueDamage: 0
-  DamageInterval: 0.1
 --- !u!1 &2505593268396497955
 GameObject:
   m_ObjectHideFlags: 0
@@ -257,10 +259,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5481706996788906068}
+  - component: {fileID: 8403913552015185605}
   - component: {fileID: 7896059304051866255}
   - component: {fileID: 5539355204427541778}
   - component: {fileID: 7081853493283584894}
-  - component: {fileID: 8403913552015185605}
   m_Layer: 0
   m_Name: AOE
   m_TagString: Untagged
@@ -278,11 +280,29 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 15, y: 8, z: 15}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2760839395420691700}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8403913552015185605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2505593268396497955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0d0a6e7b2ddbfe47a3e4fa421436619, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Duration: 0.2
+  Damage: 1
+  Intensity: 2000
+  ContinueDamage: 0
+  DamageInterval: 0.1
+  SensibilityType: 1
 --- !u!33 &7896059304051866255
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -311,7 +331,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d3d331bcacc968f40ba84699b142ed14, type: 2}
+  - {fileID: 4913911580219713836, guid: d0bdea401b80b484abdf2317bc82e05a, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -354,23 +374,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8403913552015185605
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2505593268396497955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0d0a6e7b2ddbfe47a3e4fa421436619, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Duration: 0.2
-  Damage: 1
-  Intensity: 2000
-  ContinueDamage: 0
-  DamageInterval: 0.1
 --- !u!1 &2881766992376513614
 GameObject:
   m_ObjectHideFlags: 0

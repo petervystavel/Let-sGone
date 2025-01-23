@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameObject Player;
     public static GameManager Instance;
+
+    public bool FreezeAllEnemy = false;
     public Material White;
 
     private void Awake()

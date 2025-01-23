@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Utils 
@@ -34,5 +36,25 @@ public class Utils
     public static bool IsNaN(ref Vector3 oVector)
     {
         return float.IsNaN(oVector.x) || float.IsNaN(oVector.y) || float.IsNaN(oVector.z);
+    }
+
+    public class RaycastDistanceComparer : IComparer<RaycastHit>
+    {
+        public int Compare(RaycastHit x, RaycastHit y)
+        {
+            return x.distance.CompareTo(y.distance);
+        }
+    }
+
+    public static RaycastHit[] GetSortedRaycastHit(Vector3 oStart, Vector3 oDirection, float fMaxDistance = float.PositiveInfinity)
+    {
+        RaycastHit[] oHitsInfo = Physics.RaycastAll(oStart, oDirection, fMaxDistance);
+
+        if (oHitsInfo.Length == 0)
+            return null;
+
+        Array.Sort(oHitsInfo, 0, oHitsInfo.Length, new RaycastDistanceComparer());
+
+        return oHitsInfo;
     }
 }

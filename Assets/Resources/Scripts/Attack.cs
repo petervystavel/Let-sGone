@@ -15,6 +15,8 @@ public class Attack : MonoBehaviour
 
     List<GameObject> mAlreadyHitEnemy = new List<GameObject>();
 
+    public Enemy.Type SensibilityType;
+
     void Update()
     {
         mProgress += Time.deltaTime;
@@ -47,7 +49,7 @@ public class Attack : MonoBehaviour
             return;
 
         Vector3 direction = other.transform.position - transform.position;
-        other.GetComponent<Enemy>().TakeDamage(Damage, direction.normalized, Intensity);
+        other.GetComponent<Enemy>().TakeDamage(Damage, direction.normalized, Intensity, SensibilityType);
 
         mAlreadyHitEnemy.Add(other.gameObject);
     }
@@ -64,7 +66,7 @@ public class Attack : MonoBehaviour
             return;
 
         Vector3 direction = other.transform.position - transform.position;
-        other.GetComponent<Enemy>().TakeDamage(Damage, direction.normalized, Intensity);
+        other.GetComponent<Enemy>().TakeDamage(Damage, direction.normalized, Intensity, SensibilityType);
         mDamageIntervalProgress = 0;
     }
 }

@@ -5,8 +5,18 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
+    public enum Type 
+    {
+        Enemy1,
+        Enemy2,
+        Enemy3
+    }
+
+    protected Type mType;
+
     public float MaxHealth = 3;
     public float Speed = 10;
+
     float mHealth;
 
     public float HitDuration = 0.1f;
@@ -34,17 +44,24 @@ public class Enemy : MonoBehaviour
         mNavMeshAgent.updatePosition = true;
         mNavMeshAgent.updateRotation = true;
 
-        mRealRender = transform.Find("Enemy_Pyramide").gameObject;
+        mRealRender = transform.Find("RealRender").gameObject;
         mRenderer = mRealRender.GetComponent<Renderer>();
         mBaseColor = mRenderer.material.color;
+
+        OnStart();
     }
+
+    protected virtual void OnStart() { }
 
     // Update is called once per frame
     void Update()
     {
         GameObject player = GameManager.Player;
 
-        GetComponent<NavMeshAgent>().destination = player.transform.position;
+        if(GameManager.Instance.FreezeAllEnemy == false)
+        {
+            GetComponent<NavMeshAgent>().destination = player.transform.position;
+        }
 
         if (mHitProgress >= 0)
         {
@@ -57,8 +74,11 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damage, Vector3 direction, float intensity) 
+    public void TakeDamage(float damage, Vector3 direction, float intensity, Enemy.Type sensibilityType) 
     {
+        if (sensibilityType != mType)
+            return;
+
         mHealth -= damage;
         if (mHealth <= 0)
         {
@@ -68,7 +88,6 @@ public class Enemy : MonoBehaviour
         mHitProgress = 0;
         mRenderer.material.color = GameManager.Instance.White.color;
 
-        //mNavMeshAgent.updatePosition = false;
         GetComponent<Rigidbody>().AddForce(direction * intensity, ForceMode.Impulse);
     }
 }

@@ -119,7 +119,7 @@ GameObject:
   - component: {fileID: -4358601670352405598}
   - component: {fileID: -9171783485525659692}
   - component: {fileID: -8499943606757808361}
-  - component: {fileID: 1821769088587542880}
+  - component: {fileID: 6278248223334134026}
   m_Layer: 0
   m_Name: Enemy3
   m_TagString: Enemy
@@ -266,7 +266,7 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &1821769088587542880
+--- !u!114 &6278248223334134026
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -275,10 +275,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3561537095656858251}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8a4e8beb653380438bd6025be94b3fd, type: 3}
+  m_Script: {fileID: 11500000, guid: 18a4472bc763fc14a94c79ea34274d14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 3
+  MaxHealth: 1
   Speed: 10
   HitDuration: 0.1
 --- !u!1001 &1339819584481750129
@@ -347,7 +347,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 668273e717697b048b03e5cc6b67eaf3, type: 3}
       propertyPath: m_Name
-      value: Enemy_Cube
+      value: RealRender
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

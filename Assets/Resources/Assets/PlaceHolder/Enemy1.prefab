@@ -278,7 +278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8a4e8beb653380438bd6025be94b3fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 3
+  MaxHealth: 1
   Speed: 10
   HitDuration: 0.1
 --- !u!1001 &2056055643029693076
@@ -343,7 +343,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e6b28a8631999354c9126f4c0d311807, type: 3}
       propertyPath: m_Name
-      value: Enemy_Pyramide
+      value: RealRender
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
