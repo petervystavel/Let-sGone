@@ -496,6 +496,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5732307210833133310, guid: e9adab453532ad4489d685d46f8cc117, type: 3}
+      propertyPath: Speed
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5732307210833133310, guid: e9adab453532ad4489d685d46f8cc117, type: 3}
       propertyPath: mSpeed
       value: 20
       objectReference: {fileID: 0}
@@ -1082,6 +1086,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb750f52982327f41b54b14c9baf84fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  White: {fileID: 2100000, guid: 76fb53188b198564ea34cfa521fb6aa6, type: 2}
 --- !u!4 &1418262658
 Transform:
   m_ObjectHideFlags: 0

@@ -15,13 +15,13 @@ class InputManager
         return oDirection;
     }
 
-    public static Vector2 GetRightStick()
+    public static Vector3 GetRightStick()
     {
-        Vector2 oDirection;
+        Vector3 oDirection;
 
         oDirection.x = Input.GetAxisRaw("RightHorizontal");
         oDirection.y = 0f;
-        oDirection.y = -1f * Input.GetAxisRaw("RightVertical");
+        oDirection.z = -Input.GetAxisRaw("RightVertical");
 
         return oDirection;
     }

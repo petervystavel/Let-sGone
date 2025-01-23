@@ -9,7 +9,15 @@ public class Enemy : MonoBehaviour
     public float Speed = 10;
     float mHealth;
 
+    public float HitDuration = 0.1f;
+    float mHitProgress = -1f;
+
     NavMeshAgent mNavMeshAgent;
+
+    Color mBaseColor;
+
+    GameObject mRealRender;
+    Renderer mRenderer;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +33,10 @@ public class Enemy : MonoBehaviour
         mNavMeshAgent.enabled = true;
         mNavMeshAgent.updatePosition = true;
         mNavMeshAgent.updateRotation = true;
+
+        mRealRender = transform.Find("Enemy_Pyramide").gameObject;
+        mRenderer = mRealRender.GetComponent<Renderer>();
+        mBaseColor = mRenderer.material.color;
     }
 
     // Update is called once per frame
@@ -33,6 +45,16 @@ public class Enemy : MonoBehaviour
         GameObject player = GameManager.Player;
 
         GetComponent<NavMeshAgent>().destination = player.transform.position;
+
+        if (mHitProgress >= 0)
+        {
+            mHitProgress += Time.deltaTime;
+            if (mHitProgress >= HitDuration)
+            {
+                mHitProgress = -1;
+                mRenderer.material.color = mBaseColor;
+            }
+        }
     }
 
     public void TakeDamage(float damage, Vector3 direction, float intensity) 
@@ -43,7 +65,10 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
         }
 
-        mNavMeshAgent.updatePosition = false;
+        mHitProgress = 0;
+        mRenderer.material.color = GameManager.Instance.White.color;
+
+        //mNavMeshAgent.updatePosition = false;
         GetComponent<Rigidbody>().AddForce(direction * intensity, ForceMode.Impulse);
     }
 }

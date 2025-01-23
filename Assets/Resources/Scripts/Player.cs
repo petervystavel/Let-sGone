@@ -5,36 +5,44 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float mSpeed = 5f;
+    public float Speed = 12;
 
-    Vector3 mFaceDirection;
+    Vector3 mLookDirection;
 
     GameObject mCAC;
     GameObject mAOE;
+    GameObject mLaser;
+    GameObject mEye;
 
     // Start is called before the first frame update
     void Start()
     {
-        mCAC = GameObject.Find("CAC");
-        mAOE = GameObject.Find("AOE");
+        mCAC = transform.Find("CAC").gameObject;
+        mAOE = transform.Find("AOE").gameObject;
+        mLaser = transform.Find("Laser").gameObject;
+        mEye = transform.Find("Eye").gameObject;
 
         mCAC.SetActive(false);
         mAOE.SetActive(false);
+        mLaser.SetActive(false);
     }
 
     void Update()
     {
-        Vector3 direction = InputManager.GetLeftStick();
-        if (direction.magnitude < 0.5f)
-            direction = Vector3.zero;
+        Vector3 moveDirection = InputManager.GetLeftStick();
+        Vector3 lookDirection = InputManager.GetRightStick();
+        if (moveDirection.magnitude < 0.5f)
+            moveDirection = Vector3.zero;
 
-        direction.Normalize();
+        if(lookDirection.magnitude < 0.1f)
+            lookDirection = moveDirection;
 
-        Debug.Log(direction);
+        moveDirection.Normalize();
+        lookDirection.Normalize();
 
-        LookAt(direction);
+        LookAt(lookDirection);
 
-        Vector3 velocity = direction * mSpeed;
+        Vector3 velocity = moveDirection * Speed;
 
         GetComponent<Rigidbody>().velocity = velocity;
 
@@ -46,9 +54,13 @@ public class Player : MonoBehaviour
         {
             mAOE.SetActive(true);
         }
-        else if (Input.GetButtonDown("RB")) 
+        else if (Input.GetButtonDown("RB"))
         {
-            //#TODO
+            mLaser.SetActive(true);
+        }
+        else if (Input.GetButtonUp("RB"))
+        {
+            mLaser.SetActive(false);
         }
     }
 
@@ -59,7 +71,7 @@ public class Player : MonoBehaviour
 
         transform.LookAt(transform.position + oDirection);
 
-        mFaceDirection = oDirection;
+        mLookDirection = oDirection;
 
         return true;
     }
