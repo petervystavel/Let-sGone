@@ -9,22 +9,22 @@ public class Enemy : MonoBehaviour
     public float Speed = 10;
     float mHealth;
 
+    NavMeshAgent mNavMeshAgent;
+
     // Start is called before the first frame update
     void Start()
     {
         mHealth = MaxHealth;
 
-        if (TryGetComponent(out NavMeshAgent oNavMeshAgent))
-        {
-            oNavMeshAgent.updateRotation = true;
-            oNavMeshAgent.autoBraking = false;
-            oNavMeshAgent.angularSpeed = 20000;
-            oNavMeshAgent.acceleration = 20000;
-            oNavMeshAgent.speed = Speed;
-            oNavMeshAgent.enabled = true;
-            oNavMeshAgent.updatePosition = true;
-            oNavMeshAgent.updateRotation = true;
-        }
+        mNavMeshAgent = GetComponent<NavMeshAgent>();
+        mNavMeshAgent.updateRotation = true;
+        mNavMeshAgent.autoBraking = false;
+        mNavMeshAgent.angularSpeed = 20000;
+        mNavMeshAgent.acceleration = 20000;
+        mNavMeshAgent.speed = Speed;
+        mNavMeshAgent.enabled = true;
+        mNavMeshAgent.updatePosition = true;
+        mNavMeshAgent.updateRotation = true;
     }
 
     // Update is called once per frame
@@ -43,6 +43,7 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
         }
 
-        GetComponent<Rigidbody>().AddForce(direction * intensity, ForceMode.Force);
+        mNavMeshAgent.updatePosition = false;
+        GetComponent<Rigidbody>().AddForce(direction * intensity, ForceMode.Impulse);
     }
 }
