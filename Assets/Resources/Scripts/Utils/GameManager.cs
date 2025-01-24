@@ -7,6 +7,10 @@ public class GameManager : MonoBehaviour
     public static GameObject Player;
     public static GameManager Instance;
 
+    public GameObject Enemy1;
+    public GameObject Enemy2;
+    public GameObject Enemy3;
+
     public bool FreezeAllEnemy = false;
     public Material White;
 

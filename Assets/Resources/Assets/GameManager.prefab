@@ -41,8 +41,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8068494061771550318}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb750f52982327f41b54b14c9baf84fa, type: 3}
+  m_Script: {fileID: 11500000, guid: f2dd2ca2010105a44b70bf564d0fb84f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Enemy1: {fileID: 3561537095656858251, guid: 16e7c69603ac0144d8cdfec32b1f4bec, type: 3}
+  Enemy2: {fileID: 3561537095656858251, guid: 5eed7d7c30772584a80cfa19747d144c, type: 3}
+  Enemy3: {fileID: 3561537095656858251, guid: f3882e01fc409c64da2f236672f8235b, type: 3}
   FreezeAllEnemy: 0
   White: {fileID: -8848810374240701247, guid: 529739b57fdd34945935479ce4af7fc4, type: 3}

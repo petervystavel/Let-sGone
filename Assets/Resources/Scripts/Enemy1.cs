@@ -1,5 +1,5 @@
 ﻿
-class Enemy1 : Enemy 
+public class Enemy1 : Enemy 
 {
     protected override void OnStart()
     {
