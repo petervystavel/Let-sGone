@@ -25,8 +25,8 @@ public class Enemy : MonoBehaviour
 
     float mHealth;
 
-    public float HitDuration = 0.1f;
-    float mHitProgress = -1f;
+    public Timer AttackColor = new Timer(0.2f);
+    public Timer HurtColor = new Timer(0.1f);
 
     NavMeshAgent mNavMeshAgent;
 
@@ -77,8 +77,17 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        if (HurtColor.Update()) 
+        {
+            mRenderer.material.color = mBaseColor;
+        }
+
+        if (AttackColor.Update()) 
+        {
+            mRenderer.material.color = mBaseColor;
+        }
+
         UpdateMove();
-        UpdateHit();
     }
 
     private void UpdateMove()
@@ -89,6 +98,9 @@ public class Enemy : MonoBehaviour
         if (GameManager.Instance.FreezeAllEnemy)
             return;
 
+        if (AttackColor.IsRunning())
+            return;
+
         GameObject player = GameManager.Player;
 
         float distance = Vector3.Distance(player.transform.position, transform.position);
@@ -97,20 +109,6 @@ public class Enemy : MonoBehaviour
             return;
 
         GetComponent<NavMeshAgent>().destination = player.transform.position;
-    }
-
-    private void UpdateHit()
-    {
-        if(mHitProgress < 0)
-            return;
-
-        mHitProgress += Time.deltaTime;
-
-        if (mHitProgress < HitDuration)
-            return;
-
-        mHitProgress = -1;
-        mRenderer.material.color = mBaseColor;
     }
 
     public void TakeDamage(float damage, Vector3 direction, float intensity, Enemy.Type sensibilityType) 
@@ -124,9 +122,17 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
         }
 
-        mHitProgress = 0;
+        //#TODO feedback
         mRenderer.material.color = GameManager.Instance.White.color;
 
         GetComponent<Rigidbody>().AddForce(direction * intensity, ForceMode.Impulse);
+
+        HurtColor.Start();
+    }
+
+    public void Attack()
+    {
+        AttackColor.Start();
+        mRenderer.material.color = GameManager.Instance.Red.color;
     }
 }
