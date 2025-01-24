@@ -62,11 +62,12 @@ public class Player : MonoBehaviour
     SkinnedMeshRenderer mSkinnedRenderer;
 
     Enemy.Type mCurrentProjectileType;
-    int mMaxProjectileType;
 
     Color[] colors;
 
     Force mKnockback = null;
+
+    bool[] mProjectilesPossessed = new bool[3];
 
     void Start()
     {
@@ -76,7 +77,11 @@ public class Player : MonoBehaviour
         mSkinnedRenderer = transform.Find("RealRender").GetComponentInChildren<SkinnedMeshRenderer>();
 
         mCurrentProjectileType = Enemy.Type.None;
-        mMaxProjectileType = 3;
+
+        for (int i = 0; i < mProjectilesPossessed.Length; ++i) 
+        {
+            mProjectilesPossessed[i] = false;
+        }
 
         colors = new Color[mSkinnedRenderer.materials.Length];
 
@@ -127,6 +132,9 @@ public class Player : MonoBehaviour
 
         for (int i = 0; i < mSkinnedRenderer.materials.Length; ++i) 
         {
+            if (i == 2)
+                continue;
+
             Color colorStart = mLifeIndicatorMax ? color : colors[i];
             Color colorEnd = mLifeIndicatorMax ? colors[i] : color;
 
@@ -192,11 +200,21 @@ public class Player : MonoBehaviour
         }
         else if (Input.GetButtonUp("LB"))
         {
-            if (mMaxProjectileType != 0) 
-            {
-                Enemy.Type nextProjectileType = (Enemy.Type)((((int)mCurrentProjectileType) + 1) % mMaxProjectileType);
+            NextProjectile();
+        }
+    }
 
-                SetProjectileType(nextProjectileType);
+    private void NextProjectile() 
+    {
+        if (mCurrentProjectileType == Enemy.Type.None)
+            return;
+
+        for( int i = ((int) mCurrentProjectileType + 1 ) % 3; i < mProjectilesPossessed.Length; ++i)
+        {
+            if (mProjectilesPossessed[i])
+            {
+                SetProjectileType((Enemy.Type)i);
+                return;
             }
         }
     }
@@ -245,9 +263,12 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void IncrementMaxProjectileType() 
+    public void SetProjectilePossessed(Enemy.Type type)
     {
-       mMaxProjectileType += 1;
+        mProjectilesPossessed[(int)type] = true;
+
+        if (mCurrentProjectileType == Enemy.Type.None)
+            SetProjectileType(type);
     }
 
     void OnCollisionEnter(Collision collision)
