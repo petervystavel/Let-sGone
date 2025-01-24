@@ -14,6 +14,12 @@ public class GameManager : MonoBehaviour
     public bool FreezeAllEnemy = false;
     public Material White;
 
+    public Material Projectile1;
+    public Material Projectile2;
+    public Material Projectile3;
+
+    public GameObject ProjectilePrefab;
+
     private void Awake()
     {
         Player = GameObject.Find("Player");

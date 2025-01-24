@@ -6,20 +6,17 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public float Speed = 12;
-    public float SpawnRadius = 20;
-    public float SpawnCountMin = 1;
-    public float SpawnCountMax = 1;
-    public float SpawnInterval = 1;
-    float SpawnProgress = 0;
-
-    Vector3 mLookDirection;
+    public Timer ProjectileIntervalShoot = new Timer(0.1f);
 
     GameObject mCAC;
     GameObject mAOE;
     GameObject mLaser;
-    GameObject mEye;
+    GameObject mProjectileSpawn;
 
-    List<Type> mTypesToWarp = new List<Type>();
+    MeshRenderer mMeshRenderer;
+
+    Enemy.Type mCurrentProjectileType;
+    int mMaxProjectileType;
 
     // Start is called before the first frame update
     void Start()
@@ -27,45 +24,22 @@ public class Player : MonoBehaviour
         mCAC = transform.Find("CAC").gameObject;
         mAOE = transform.Find("AOE").gameObject;
         mLaser = transform.Find("Laser").gameObject;
-        mEye = transform.Find("Eye").gameObject;
+        mProjectileSpawn = transform.Find("ProjectileSpawn").gameObject;
+
+        mMeshRenderer = transform.Find("RealRender").GetComponent<MeshRenderer>();
 
         mCAC.SetActive(false);
         mAOE.SetActive(false);
         mLaser.SetActive(false);
+
+        mCurrentProjectileType = Enemy.Type.None;
+        mMaxProjectileType = 3;
     }
 
     void Update()
     {
+        ProjectileIntervalShoot.Update();
         HandleInput();
-        TrySpawnEnemy();
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, SpawnRadius);
-    }
-
-    private void TrySpawnEnemy() 
-    {
-        /*
-        SpawnProgress += Time.deltaTime;
-        if (SpawnProgress >= SpawnInterval)
-        {
-            SpawnProgress = 0;
-            int count = UnityEngine.Random.Range((int)SpawnCountMin, (int)SpawnCountMax);
-            for (int i = 0; i < count; i++)
-            {
-                Vector2 v2 = UnityEngine.Random.insideUnitCircle * SpawnRadius;
-                Vector3 v3 = new Vector3(v2.x, 0, v2.y);
-                Vector3 spawnPosition = transform.position + v3;
-                spawnPosition.y = 0;
-                GameObject enemy = Instantiate(GameManager.Instance.Enemy1);
-
-                enemy.GetComponent<Enemy>().Initialize(spawnPosition);
-            }
-        }
-        */
     }
 
     private void HandleInput()
@@ -88,34 +62,57 @@ public class Player : MonoBehaviour
 
         GetComponent<Rigidbody>().velocity = velocity;
 
-        //Buttons
-        if (Input.GetButtonDown("X"))
+        if (Input.GetButtonDown("RB"))
         {
-            mCAC.SetActive(true);
+            if ((int)mCurrentProjectileType != -1 && ProjectileIntervalShoot.IsRunning() == false)
+            {
+                GameObject proj = Instantiate(GameManager.Instance.ProjectilePrefab, mProjectileSpawn.transform.position, Quaternion.identity);
+
+                proj.GetComponent<Projectile>().Initialize(transform.forward, mCurrentProjectileType);
+
+                ProjectileIntervalShoot.Start();
+            }
         }
-        else if (Input.GetButtonDown("Y"))
+        else if (Input.GetButtonUp("LB"))
         {
-            mAOE.SetActive(true);
-        }
-        else if (Input.GetButtonDown("RB"))
-        {
-            mLaser.SetActive(true);
-        }
-        else if (Input.GetButtonUp("RB"))
-        {
-            mLaser.SetActive(false);
+            if (mMaxProjectileType != 0) 
+            {
+                Enemy.Type nextProjectileType = (Enemy.Type)((((int)mCurrentProjectileType) + 1) % mMaxProjectileType);
+
+                SetProjectileType(nextProjectileType);
+            }
         }
     }
 
     public bool LookAt(Vector3 oDirection)
     {
+        if(Utils.AreAquals(oDirection, Vector3.zero))
+            return false;
+
         if (Utils.IsNaN(ref oDirection))
             return false;
 
         transform.LookAt(transform.position + oDirection);
 
-        mLookDirection = oDirection;
-
         return true;
+    }
+
+    private void SetProjectileType(Enemy.Type type)
+    {
+        mCurrentProjectileType = type;
+
+        Material[] materials = new Material[3];
+        materials[0] = GameManager.Instance.Projectile1;
+        materials[1] = GameManager.Instance.Projectile2;
+        materials[2] = GameManager.Instance.Projectile3;
+
+        Debug.Log(materials[(int)type].ToString());
+
+        mMeshRenderer.materials[2].color = materials[(int)type].color;
+    }
+
+    private void IncrementMaxProjectileType() 
+    {
+       mMaxProjectileType += 1;
     }
 }

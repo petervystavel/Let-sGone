@@ -7,9 +7,13 @@ public class Enemy : MonoBehaviour
 {
     public enum Type 
     {
+        None = -1,
+
         Enemy1,
         Enemy2,
-        Enemy3
+        Enemy3,
+
+        Count
     }
 
     protected Type mType;
