@@ -306,6 +306,8 @@ public class Player : MonoBehaviour
     {
         mLife -= 1;
 
+        LoopAudio.Instance.PlaySFXHurt();
+
         if (mLife <= 0)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
