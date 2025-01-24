@@ -211,11 +211,13 @@ public class Player : MonoBehaviour
         if (mCurrentProjectileType == Enemy.Type.None)
             return;
 
-        for( int i = ((int) mCurrentProjectileType + 1 ) % 3; i < mProjectilesPossessed.Length; ++i)
+        for( int i = ((int)mCurrentProjectileType + 1) % 3; i < mProjectilesPossessed.Length + 3; ++i)
         {
-            if (mProjectilesPossessed[i])
+            int index = i % 3;
+
+            if (mProjectilesPossessed[index])
             {
-                SetProjectileType((Enemy.Type)i);
+                SetProjectileType((Enemy.Type)index);
                 return;
             }
         }
