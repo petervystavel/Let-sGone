@@ -47,11 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d0a6e7b2ddbfe47a3e4fa421436619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Duration: 1
   Damage: 1
   Intensity: 0
   ContinueDamage: 1
-  DamageInterval: 0.1
   SensibilityType: 2
 --- !u!33 &181571929487574544
 MeshFilter:
@@ -173,11 +171,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d0a6e7b2ddbfe47a3e4fa421436619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Duration: 0.2
   Damage: 1
   Intensity: 20
   ContinueDamage: 0
-  DamageInterval: 0.1
   SensibilityType: 0
 --- !u!33 &2608400633112655387
 MeshFilter:
@@ -297,11 +293,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d0a6e7b2ddbfe47a3e4fa421436619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Duration: 0.2
   Damage: 1
   Intensity: 2000
   ContinueDamage: 0
-  DamageInterval: 0.1
   SensibilityType: 1
 --- !u!33 &7896059304051866255
 MeshFilter:
@@ -633,6 +627,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 20
+  SpawnRadius: 20
+  SpawnCountMin: 1
+  SpawnCountMax: 1
+  SpawnInterval: 1
 --- !u!1001 &8655916613887408607
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -697,9 +695,21 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 529739b57fdd34945935479ce4af7fc4, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3120e00ba90856b4dafb8477e4ba63cd, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 529739b57fdd34945935479ce4af7fc4, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: cb3858b3163dc1f4fa2260638ba28fe5, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 529739b57fdd34945935479ce4af7fc4, type: 3}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: -4770390735465466038, guid: 82645e5bfc97c0c448dff1b4da32adf3, type: 3}
     - target: {fileID: 919132149155446097, guid: 529739b57fdd34945935479ce4af7fc4, type: 3}
       propertyPath: m_Name
-      value: Player (1)
+      value: RealRender
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

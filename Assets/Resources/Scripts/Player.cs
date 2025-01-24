@@ -21,6 +21,11 @@ public class Player : MonoBehaviour
 
     List<Type> mTypesToWarp = new List<Type>();
 
+    MeshRenderer mMeshRenderer;
+
+    Enemy.Type mCurrentProjectileType;
+    int mMaxProjectileType;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,15 +34,19 @@ public class Player : MonoBehaviour
         mLaser = transform.Find("Laser").gameObject;
         mEye = transform.Find("Eye").gameObject;
 
+        mMeshRenderer = transform.Find("RealRender").GetComponent<MeshRenderer>();
+
         mCAC.SetActive(false);
         mAOE.SetActive(false);
         mLaser.SetActive(false);
+
+        mCurrentProjectileType = Enemy.Type.None;
+        mMaxProjectileType = 3;
     }
 
     void Update()
     {
         HandleInput();
-        TrySpawnEnemy();
     }
 
     private void OnDrawGizmos()
@@ -46,27 +55,6 @@ public class Player : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, SpawnRadius);
     }
 
-    private void TrySpawnEnemy() 
-    {
-        /*
-        SpawnProgress += Time.deltaTime;
-        if (SpawnProgress >= SpawnInterval)
-        {
-            SpawnProgress = 0;
-            int count = UnityEngine.Random.Range((int)SpawnCountMin, (int)SpawnCountMax);
-            for (int i = 0; i < count; i++)
-            {
-                Vector2 v2 = UnityEngine.Random.insideUnitCircle * SpawnRadius;
-                Vector3 v3 = new Vector3(v2.x, 0, v2.y);
-                Vector3 spawnPosition = transform.position + v3;
-                spawnPosition.y = 0;
-                GameObject enemy = Instantiate(GameManager.Instance.Enemy1);
-
-                enemy.GetComponent<Enemy>().Initialize(spawnPosition);
-            }
-        }
-        */
-    }
 
     private void HandleInput()
     {
@@ -88,22 +76,22 @@ public class Player : MonoBehaviour
 
         GetComponent<Rigidbody>().velocity = velocity;
 
-        //Buttons
-        if (Input.GetButtonDown("X"))
-        {
-            mCAC.SetActive(true);
-        }
-        else if (Input.GetButtonDown("Y"))
-        {
-            mAOE.SetActive(true);
-        }
-        else if (Input.GetButtonDown("RB"))
+        if (Input.GetButtonDown("RB"))
         {
             mLaser.SetActive(true);
         }
         else if (Input.GetButtonUp("RB"))
         {
             mLaser.SetActive(false);
+        }
+        else if (Input.GetButtonUp("LB"))
+        {
+            if (mMaxProjectileType != 0) 
+            {
+                Enemy.Type nextProjectileType = (Enemy.Type)((((int)mCurrentProjectileType) + 1) % mMaxProjectileType);
+
+                SetProjectileType(nextProjectileType);
+            }
         }
     }
 
@@ -117,5 +105,24 @@ public class Player : MonoBehaviour
         mLookDirection = oDirection;
 
         return true;
+    }
+
+    private void SetProjectileType(Enemy.Type type)
+    {
+        mCurrentProjectileType = type;
+
+        Material[] materials = new Material[3];
+        materials[0] = GameManager.Instance.Projectile1;
+        materials[1] = GameManager.Instance.Projectile2;
+        materials[2] = GameManager.Instance.Projectile3;
+
+        Debug.Log(materials[(int)type].ToString());
+
+        mMeshRenderer.materials[2].color = materials[(int)type].color;
+    }
+
+    private void IncrementMaxProjectileType() 
+    {
+       mMaxProjectileType += 1;
     }
 }
