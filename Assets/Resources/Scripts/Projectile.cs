@@ -5,7 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public float Damage = 1f;
-    public float Intensity = 10f;
+    public float Intensity = 500f;
     public float Speed = 20f;
 
     Enemy.Type mType;
@@ -13,7 +13,6 @@ public class Projectile : MonoBehaviour
     public void Initialize(Vector3 direction, Enemy.Type type) 
     {
         transform.forward = direction;
-        GetComponent<Rigidbody>().velocity = direction * Speed;
         mType = type;
 
         GameObject[] types = new GameObject[3];
@@ -29,7 +28,7 @@ public class Projectile : MonoBehaviour
 
     void Update()
     {
-
+        GetComponent<Rigidbody>().velocity = transform.forward * Speed;
     }
 
     private void OnTriggerEnter(Collider other)

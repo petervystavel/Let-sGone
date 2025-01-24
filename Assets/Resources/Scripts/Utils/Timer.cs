@@ -40,4 +40,9 @@ public class Timer
     {
         mProgress = -1;
     }
+
+    float GetAcomplishedRatio() 
+    {
+        return mProgress / Duration;
+    }
 }
