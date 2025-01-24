@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour
     public float MaxHealth = 3;
     public float Speed = 10;
     public float DetectionDistance = 10;
+    public bool NoMove = false;
 
     float mHealth;
 
@@ -82,6 +83,9 @@ public class Enemy : MonoBehaviour
 
     private void UpdateMove()
     {
+        if (NoMove)
+            return;
+
         if (GameManager.Instance.FreezeAllEnemy)
             return;
 
