@@ -54,7 +54,7 @@ public class Enemy : MonoBehaviour
         mRenderer = mRealRender.GetComponent<Renderer>();
         mBaseColor = mRenderer.material.color;
 
-        mCAC = transform.Find("CAC").gameObject;
+        //mCAC = transform.Find("CAC").gameObject;
 
         OnStart();
     }
