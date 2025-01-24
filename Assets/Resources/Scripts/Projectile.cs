@@ -5,7 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public float Damage = 1f;
-    public float Intensity = 10f;
+    public float Intensity = 500f;
     public float Speed = 20f;
 
     Enemy.Type mType;
