@@ -226,8 +226,6 @@ public class Player : MonoBehaviour
 
         Vector3 direction = (transform.position - collision.transform.position).normalized;
 
-        //GetComponent<Rigidbody>().AddForce(direction * Knockback, ForceMode.Impulse);
-
         mKnockback = new Force(new Vector2(direction.x, direction.z), Knockback, KnockbackDuration);
 
         AttackColor.Start();

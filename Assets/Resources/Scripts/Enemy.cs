@@ -38,7 +38,9 @@ public class Enemy : MonoBehaviour
 
     GameObject mRealRender;
     Renderer mRenderer;
-    GameObject mCAC;
+
+    Force mKnockback = null;
+
 
     void Start()
     {
@@ -58,8 +60,6 @@ public class Enemy : MonoBehaviour
         mRealRender = transform.Find("RealRender").gameObject;
         mRenderer = mRealRender.GetComponent<Renderer>();
         mBaseColor = mRenderer.material.color;
-
-        //mCAC = transform.Find("CAC").gameObject;
 
         OnStart();
     }
@@ -88,11 +88,22 @@ public class Enemy : MonoBehaviour
 
         AfterAttack.Update();
 
+        if (mKnockback != null)
+        {
+            bool end = mKnockback.Update(transform);
+
+            if (end)
+            {
+                mKnockback = null;
+                mNavMeshAgent.enabled = true;
+            }
+        }
+
         if (BeforeDie.Update())
         {
             Destroy(gameObject);
         }
-        else if (BeforeDie.IsRunning() == false)
+        else
         {
             UpdateMove();
         }
@@ -106,7 +117,16 @@ public class Enemy : MonoBehaviour
         if (GameManager.Instance.FreezeAllEnemy)
             return;
 
+        if (BeforeDie.IsRunning())
+            return;
+
         if (AfterAttack.IsRunning())
+            return;
+
+        if (mKnockback != null)
+            return;
+
+        if (mNavMeshAgent.enabled == false)
             return;
 
         GameObject player = GameManager.Player;
@@ -131,8 +151,11 @@ public class Enemy : MonoBehaviour
         if (mHealth <= 0)
         {
             BeforeDie.Start();
-            mNavMeshAgent.enabled = false;
         }
+
+        mKnockback = new Force(new Vector2(direction.x, direction.z), Knockback, KnockbackDuration);
+
+        mNavMeshAgent.enabled = false;
 
         //#TODO feedback
         mRenderer.material.color = GameManager.Instance.White.color;
