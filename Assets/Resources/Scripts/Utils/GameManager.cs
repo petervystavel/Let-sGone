@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     public Material Projectile2;
     public Material Projectile3;
 
+    public GameObject ProjectilePrefab;
+
     private void Awake()
     {
         Player = GameObject.Find("Player");

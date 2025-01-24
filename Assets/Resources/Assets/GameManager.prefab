@@ -52,3 +52,4 @@ MonoBehaviour:
   Projectile1: {fileID: 2100000, guid: 34827cc1ada8ad746ba0568d2cee0a0c, type: 2}
   Projectile2: {fileID: 2100000, guid: 4a58ca073732047409c4e636fc24e196, type: 2}
   Projectile3: {fileID: 2100000, guid: 69d46cad5b056aa4b9f5e0342bd0c570, type: 2}
+  ProjectilePrefab: {fileID: 3561537095656858251, guid: 58b82dd2e7022014d87dee756c99a31f, type: 3}
