@@ -25,8 +25,9 @@ public class Enemy : MonoBehaviour
 
     float mHealth;
 
-    public Timer AttackColor = new Timer(0.2f);
-    public Timer HurtColor = new Timer(0.1f);
+    public Timer AttackColor = new Timer(1f);
+    public Timer HurtColor = new Timer(0.2f);
+    public Timer BeforeDie = new Timer(0.5f);
 
     NavMeshAgent mNavMeshAgent;
 
@@ -87,7 +88,14 @@ public class Enemy : MonoBehaviour
             mRenderer.material.color = mBaseColor;
         }
 
-        UpdateMove();
+        if (BeforeDie.Update())
+        {
+            Destroy(gameObject);
+        }
+        else if (BeforeDie.IsRunning() == false)
+        {
+            UpdateMove();
+        }
     }
 
     private void UpdateMove()
@@ -108,7 +116,7 @@ public class Enemy : MonoBehaviour
         if(distance > DetectionDistance)
             return;
 
-        GetComponent<NavMeshAgent>().destination = player.transform.position;
+        mNavMeshAgent.destination = player.transform.position;
     }
 
     public void TakeDamage(float damage, Vector3 direction, float intensity, Enemy.Type sensibilityType) 
@@ -116,10 +124,14 @@ public class Enemy : MonoBehaviour
         if (sensibilityType != mType)
             return;
 
+        if (BeforeDie.IsRunning())
+            return;
+
         mHealth -= damage;
         if (mHealth <= 0)
         {
-            Destroy(gameObject);
+            BeforeDie.Start();
+            mNavMeshAgent.enabled = false;
         }
 
         //#TODO feedback

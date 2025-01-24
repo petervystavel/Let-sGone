@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     public float Speed = 12;
     public Timer ProjectileIntervalShoot = new Timer(0.1f);
     public Timer Invincibility = new Timer(0.5f);
+    public float Knockback = 2000;
 
     GameObject mCAC;
     GameObject mAOE;
@@ -135,7 +136,7 @@ public class Player : MonoBehaviour
         //player take damage and knockback
         Vector3 direction = (transform.position - collision.transform.position).normalized;
 
-        GetComponent<Rigidbody>().AddForce(direction * 500, ForceMode.Impulse);
+        GetComponent<Rigidbody>().AddForce(direction * Knockback, ForceMode.Impulse);
 
         Invincibility.Start();
     }
