@@ -48,7 +48,7 @@ public class Player : MonoBehaviour
     public Timer ProjectileIntervalShoot = new Timer(0.1f);
     public Timer Invincibility = new Timer(0.5f);
     public Timer AttackColor = new Timer(0.1f);
-    public float Knockback = 500;
+    public float Impulse = 200;
     public float KnockbackDuration = 0.2f;
     public int MaxLife = 3;
 
@@ -287,7 +287,7 @@ public class Player : MonoBehaviour
 
         Vector3 direction = (transform.position - collision.transform.position).normalized;
 
-        mKnockback = new Force(new Vector2(direction.x, direction.z), Knockback, KnockbackDuration);
+        mKnockback = new Force(new Vector2(direction.x, direction.z), Impulse, KnockbackDuration);
 
         AttackColor.Start();
 

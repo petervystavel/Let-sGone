@@ -43,7 +43,7 @@ public class Projectile : MonoBehaviour
             if (enemy != null) 
             {
                 Vector3 direction = (other.transform.position - transform.position).normalized;
-                enemy.TakeDamage(Damage, direction, Intensity, mType);
+                enemy.TakeDamage(Damage, transform.forward, Intensity, mType);
             }
         }
 
