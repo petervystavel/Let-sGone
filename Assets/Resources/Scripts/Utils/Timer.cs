@@ -31,9 +31,14 @@ public class Timer
         return mProgress >= 0;
     }
 
-    public void Start()
+    public void Start(float duration = -1)
     {
         mProgress = 0;
+
+        if (duration > 0) 
+        {
+            Duration = duration;
+        }
     }
 
     public void Stop()

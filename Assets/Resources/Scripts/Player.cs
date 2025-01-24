@@ -49,10 +49,13 @@ public class Player : MonoBehaviour
     public Timer AttackColor = new Timer(0.1f);
     public float Knockback = 500;
     public float KnockbackDuration = 0.2f;
+    public int MaxLife = 3;
 
-    GameObject mCAC;
-    GameObject mAOE;
-    GameObject mLaser;
+    int mLife;
+
+    Timer mLifeOscillationTimer = new Timer(1f);
+    Timer mLifeIndicatorTimer = new Timer(0.5f);
+
     GameObject mProjectileSpawn;
 
     SkinnedMeshRenderer mSkinnedRenderer;
@@ -66,16 +69,10 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        mCAC = transform.Find("CAC").gameObject;
-        mAOE = transform.Find("AOE").gameObject;
-        mLaser = transform.Find("Laser").gameObject;
+        mLife = MaxLife;
         mProjectileSpawn = transform.Find("ProjectileSpawn").gameObject;
 
         mSkinnedRenderer = transform.Find("RealRender").GetComponentInChildren<SkinnedMeshRenderer>();
-
-        mCAC.SetActive(false);
-        mAOE.SetActive(false);
-        mLaser.SetActive(false);
 
         mCurrentProjectileType = Enemy.Type.None;
         mMaxProjectileType = 3;
@@ -98,6 +95,8 @@ public class Player : MonoBehaviour
             ResetColor();
         }
 
+        UpdateLife();
+
         if (mKnockback != null) 
         {
             bool end = mKnockback.Update(transform);
@@ -109,6 +108,46 @@ public class Player : MonoBehaviour
         HandleInput();
     }
 
+    bool mLifeIndicatorMax = false;
+    private void UpdateLife()
+    {
+        if (mLifeOscillationTimer.Update()) 
+            mLifeIndicatorTimer.Start();
+
+        if (mLifeOscillationTimer.IsRunning())
+            return;
+
+        if (mLifeIndicatorTimer.IsRunning() == false)
+            return;
+
+        float ratio = mLifeIndicatorTimer.GetAcomplishedRatio();
+
+        Color color = GameManager.Instance.Red.color;
+
+        for (int i = 0; i < mSkinnedRenderer.materials.Length; ++i) 
+        {
+            Color colorStart = mLifeIndicatorMax ? color : colors[i];
+            Color colorEnd = mLifeIndicatorMax ? colors[i] : color;
+
+            mSkinnedRenderer.materials[i].color = Color.Lerp(colorStart, colorEnd, ratio);
+        }
+
+        if (mLifeIndicatorTimer.Update())
+        {
+            if (mLifeIndicatorMax)
+            {
+                mLifeIndicatorMax = false;
+                mLifeOscillationTimer.Start();
+                ResetColor();
+            }  
+            else
+            {
+                mLifeIndicatorMax = true;
+                mLifeIndicatorTimer.Start();
+            }
+        }
+    }
+
     private void HandleInput()
     {
         if (mKnockback == null)
@@ -118,12 +157,12 @@ public class Player : MonoBehaviour
             Vector3 lookDirection = InputManager.GetRightStick();
             if (moveDirection.magnitude < 0.5f)
             {
-                GetComponentInChildren<Animator>().SetTrigger("TriggerIdle");
+                gameObject.GetComponentInChildren<Animator>().SetBool("BoolRun", false);
                 moveDirection = Vector3.zero;
             }
-            else 
+            else
             {
-                GetComponentInChildren<Animator>().SetTrigger("TriggerRun");
+                gameObject.GetComponentInChildren<Animator>().SetBool("BoolRun", true);
             }
 
             if (lookDirection.magnitude < 0.1f)
@@ -233,5 +272,28 @@ public class Player : MonoBehaviour
         SetColor(GameManager.Instance.Red.color);
 
         Invincibility.Start();
+
+        TakeDamage();
+    }
+
+    public void TakeDamage()
+    {
+        mLife -= 1;
+
+        if (mLife <= 0)
+        {
+            //#TODO GameOver
+        }
+        else 
+        {
+            float duration = 1f;
+            if (mLife == 1) 
+            {
+                duration = 0.1f;
+            }
+
+            mLifeOscillationTimer.Start(duration);
+            mLifeIndicatorTimer.Start();
+        }
     }
 }
