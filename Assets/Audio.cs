@@ -9,10 +9,14 @@ public class LoopAudio : MonoBehaviour
     [Range(0f, 1f)]public float volume = 1f;
 
     public AudioClip[] SFXHits;
-    public AudioSource mSFXSource;
+    AudioSource mSFXSource;
 
     public AudioClip SFXShoot;
     AudioSource mSFXShootSource;
+
+
+    public AudioClip SFXHurt;
+    AudioSource mSFXHurtSource;
 
     int mCurrentSFXHit = 0;
 
@@ -29,6 +33,7 @@ public class LoopAudio : MonoBehaviour
 
         mSFXShootSource = gameObject.AddComponent<AudioSource>();
 
+        mSFXHurtSource = gameObject.AddComponent<AudioSource>();
 
         // Assigner l'audio clip
         if (audioClip != null)
@@ -63,6 +68,13 @@ public class LoopAudio : MonoBehaviour
         mSFXShootSource.volume = 0.5f;
         mSFXShootSource.pitch = Random.Range(0.5f, 0.8f);
         mSFXShootSource.PlayOneShot(SFXShoot);
+    }
+
+    public void PlaySFXHurt()
+    {
+        mSFXHurtSource.volume = 0.5f;
+        mSFXHurtSource.pitch = Random.Range(1.5f, 1.7f);
+        mSFXHurtSource.PlayOneShot(SFXHurt);
     }
 
     private void Update()

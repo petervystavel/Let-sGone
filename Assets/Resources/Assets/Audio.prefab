@@ -150,3 +150,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c74b89a91f70a4444805d593ee3931eb, type: 3}
   - {fileID: 8300000, guid: 73cfdffbf4fb55148a4500250a946fd4, type: 3}
   SFXShoot: {fileID: 8300000, guid: aa80b870359bf6d47a4f6f2b87af6769, type: 3}
+  SFXHurt: {fileID: 8300000, guid: df90d355a288290429f7a1935a95a266, type: 3}
