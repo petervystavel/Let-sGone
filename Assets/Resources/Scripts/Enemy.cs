@@ -148,6 +148,9 @@ public class Enemy : MonoBehaviour
             return;
 
         mHealth -= damage;
+
+        LoopAudio.Instance.PlaySFXHit();
+
         if (mHealth <= 0)
         {
             BeforeDie.Start();

@@ -54,4 +54,5 @@ MonoBehaviour:
   Projectile2: {fileID: 2100000, guid: 4a58ca073732047409c4e636fc24e196, type: 2}
   Projectile3: {fileID: 2100000, guid: 69d46cad5b056aa4b9f5e0342bd0c570, type: 2}
   ProjectilePrefab: {fileID: 3561537095656858251, guid: 58b82dd2e7022014d87dee756c99a31f, type: 3}
-  Audio: {fileID: 8300000, guid: 045945ea0e2754c4bbd70af1f314e86e, type: 3}
+  SFXHit:
+  - {fileID: 8300000, guid: d7089f1e396f97d4ba28b2774a93c525, type: 3}

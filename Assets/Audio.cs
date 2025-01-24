@@ -3,13 +3,32 @@
 [RequireComponent(typeof(AudioSource))]
 public class LoopAudio : MonoBehaviour
 {
-    public AudioClip audioClip; // Le fichier audio WAV à lire
+    public AudioClip audioClip;
     private AudioSource audioSource;
+
+    [Range(0f, 1f)]public float volume = 1f;
+
+    public AudioClip[] SFXHits;
+    public AudioSource mSFXSource;
+
+    public AudioClip SFXShoot;
+    AudioSource mSFXShootSource;
+
+    int mCurrentSFXHit = 0;
+
+    public static LoopAudio Instance;
 
     void Start()
     {
+        Instance = this;
+
         // Récupérer ou ajouter un composant AudioSource
         audioSource = GetComponent<AudioSource>();
+
+        mSFXSource = gameObject.AddComponent<AudioSource>();
+
+        mSFXShootSource = gameObject.AddComponent<AudioSource>();
+
 
         // Assigner l'audio clip
         if (audioClip != null)
@@ -21,6 +40,36 @@ public class LoopAudio : MonoBehaviour
         else
         {
             Debug.LogError("Aucun fichier audio assigné au script !");
+        }
+    }
+
+    public void PlaySFXHit()
+    {
+        if (SFXHits.Length > 0)
+        {
+            mSFXSource.volume = 0.7f;
+
+            mSFXSource.PlayOneShot(SFXHits[mCurrentSFXHit]);
+            mCurrentSFXHit++;
+            if (mCurrentSFXHit >= SFXHits.Length)
+            {
+                mCurrentSFXHit = 0;
+            }
+        }
+    }
+
+    public void PlaySFXShoot()
+    {
+        mSFXShootSource.volume = 0.5f;
+        mSFXShootSource.pitch = Random.Range(0.5f, 0.8f);
+        mSFXShootSource.PlayOneShot(SFXShoot);
+    }
+
+    private void Update()
+    {
+        if(audioSource.volume != volume)
+        {
+            audioSource.volume = volume;
         }
     }
 

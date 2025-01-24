@@ -196,6 +196,8 @@ public class Player : MonoBehaviour
                 proj.GetComponent<Projectile>().Initialize(transform.forward, mCurrentProjectileType);
 
                 ProjectileIntervalShoot.Start();
+
+                LoopAudio.Instance.PlaySFXShoot();
             }
         }
         else if (Input.GetButtonUp("LB"))
