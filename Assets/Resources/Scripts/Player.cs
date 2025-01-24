@@ -7,8 +7,8 @@ public class Player : MonoBehaviour
 {
     public float Speed = 12;
     public float SpawnRadius = 20;
-    public float SpawnCountMin = 5;
-    public float SpawnCountMax = 10;
+    public float SpawnCountMin = 1;
+    public float SpawnCountMax = 1;
     public float SpawnInterval = 1;
     float SpawnProgress = 0;
 
@@ -18,6 +18,8 @@ public class Player : MonoBehaviour
     GameObject mAOE;
     GameObject mLaser;
     GameObject mEye;
+
+    List<Type> mTypesToWarp = new List<Type>();
 
     // Start is called before the first frame update
     void Start()
@@ -54,10 +56,13 @@ public class Player : MonoBehaviour
             int count = UnityEngine.Random.Range((int)SpawnCountMin, (int)SpawnCountMax);
             for (int i = 0; i < count; i++)
             {
-                Vector3 spawnPosition = transform.position + UnityEngine.Random.insideUnitSphere * SpawnRadius;
+                Vector2 v2 = UnityEngine.Random.insideUnitCircle * SpawnRadius;
+                Vector3 v3 = new Vector3(v2.x, 0, v2.y);
+                Vector3 spawnPosition = transform.position + v3;
                 spawnPosition.y = 0;
-                GameObject enemy = Instantiate(GameManager.Instance.EnemyPrefab, spawnPosition, Quaternion.identity);
-                enemy.transform.LookAt(transform.position);
+                GameObject enemy = Instantiate(GameManager.Instance.Enemy1);
+
+                enemy.GetComponent<Enemy>().Initialize(spawnPosition);
             }
         }
         */

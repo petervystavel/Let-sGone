@@ -16,6 +16,7 @@ public class Enemy : MonoBehaviour
 
     public float MaxHealth = 3;
     public float Speed = 10;
+    public float DetectionDistance = 10;
 
     float mHealth;
 
@@ -28,13 +29,14 @@ public class Enemy : MonoBehaviour
 
     GameObject mRealRender;
     Renderer mRenderer;
+    GameObject mCAC;
 
-    // Start is called before the first frame update
     void Start()
     {
+        mNavMeshAgent = GetComponent<NavMeshAgent>();
+
         mHealth = MaxHealth;
 
-        mNavMeshAgent = GetComponent<NavMeshAgent>();
         mNavMeshAgent.updateRotation = true;
         mNavMeshAgent.autoBraking = false;
         mNavMeshAgent.angularSpeed = 20000;
@@ -48,30 +50,59 @@ public class Enemy : MonoBehaviour
         mRenderer = mRealRender.GetComponent<Renderer>();
         mBaseColor = mRenderer.material.color;
 
+        mCAC = transform.Find("CAC").gameObject;
+
         OnStart();
     }
 
     protected virtual void OnStart() { }
 
-    // Update is called once per frame
+    public void Initialize(Vector3 position)
+    {
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(position, out hit, 10, NavMesh.AllAreas))
+        {
+            mNavMeshAgent.Warp(hit.position);
+        }
+        else
+        {
+            Debug.Log("Cannot find position on navmesh");
+        }
+    }
+
     void Update()
     {
+        UpdateMove();
+        UpdateHit();
+    }
+
+    private void UpdateMove()
+    {
+        if (GameManager.Instance.FreezeAllEnemy)
+            return;
+
         GameObject player = GameManager.Player;
 
-        if(GameManager.Instance.FreezeAllEnemy == false)
-        {
-            GetComponent<NavMeshAgent>().destination = player.transform.position;
-        }
+        float distance = Vector3.Distance(player.transform.position, transform.position);
 
-        if (mHitProgress >= 0)
-        {
-            mHitProgress += Time.deltaTime;
-            if (mHitProgress >= HitDuration)
-            {
-                mHitProgress = -1;
-                mRenderer.material.color = mBaseColor;
-            }
-        }
+        if(distance > DetectionDistance)
+            return;
+
+        GetComponent<NavMeshAgent>().destination = player.transform.position;
+    }
+
+    private void UpdateHit()
+    {
+        if(mHitProgress < 0)
+            return;
+
+        mHitProgress += Time.deltaTime;
+
+        if (mHitProgress < HitDuration)
+            return;
+
+        mHitProgress = -1;
+        mRenderer.material.color = mBaseColor;
     }
 
     public void TakeDamage(float damage, Vector3 direction, float intensity, Enemy.Type sensibilityType) 
