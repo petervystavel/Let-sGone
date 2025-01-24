@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Force 
 {
@@ -282,7 +283,7 @@ public class Player : MonoBehaviour
 
         if (mLife <= 0)
         {
-            //#TODO GameOver
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
         else 
         {
