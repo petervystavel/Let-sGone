@@ -23,10 +23,13 @@ public class Enemy : MonoBehaviour
     public float DetectionDistance = 10;
     public bool NoMove = false;
 
+    public float Knockback = 100;
+    public float KnockbackDuration = 0.1f;
+
     float mHealth;
 
-    public Timer AttackColor = new Timer(1f);
     public Timer HurtColor = new Timer(0.2f);
+    public Timer AfterAttack = new Timer(0.5f);
     public Timer BeforeDie = new Timer(0.5f);
 
     NavMeshAgent mNavMeshAgent;
@@ -83,10 +86,7 @@ public class Enemy : MonoBehaviour
             mRenderer.material.color = mBaseColor;
         }
 
-        if (AttackColor.Update()) 
-        {
-            mRenderer.material.color = mBaseColor;
-        }
+        AfterAttack.Update();
 
         if (BeforeDie.Update())
         {
@@ -106,7 +106,7 @@ public class Enemy : MonoBehaviour
         if (GameManager.Instance.FreezeAllEnemy)
             return;
 
-        if (AttackColor.IsRunning())
+        if (AfterAttack.IsRunning())
             return;
 
         GameObject player = GameManager.Player;
@@ -144,7 +144,6 @@ public class Enemy : MonoBehaviour
 
     public void Attack()
     {
-        AttackColor.Start();
-        mRenderer.material.color = GameManager.Instance.Red.color;
+        AfterAttack.Start();
     }
 }

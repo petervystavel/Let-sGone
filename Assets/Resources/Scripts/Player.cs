@@ -1,26 +1,69 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
+
+public class Force 
+{
+    Vector2 mDirection;
+    float mMaxIntensity;
+    float mIntensity;
+    Timer mDuration;
+
+    public Force(Vector2 direction, float intensity, float duration)
+    {
+        mDirection = direction;
+        mMaxIntensity = intensity;
+        mIntensity = mMaxIntensity;
+        mDuration = new Timer(duration);
+        mDuration.Start();
+    }
+
+    public bool Update(Transform transform) 
+    {
+        if (mDuration.IsRunning() == false)
+            return true;
+
+        mDuration.Update();
+
+        float ratio = mDuration.GetAcomplishedRatio();
+
+        mIntensity = Mathf.Lerp(mMaxIntensity, 0, ratio);
+
+        Vector2 impulse = mDirection * mIntensity;
+
+        Vector3 velocity = new Vector3(impulse.x, 0, impulse.y);
+
+        transform.position = transform.position + velocity * Time.deltaTime;
+
+        return false;
+    }
+}
 
 public class Player : MonoBehaviour
 {
     public float Speed = 12;
     public Timer ProjectileIntervalShoot = new Timer(0.1f);
     public Timer Invincibility = new Timer(0.5f);
-    public float Knockback = 2000;
+    public Timer AttackColor = new Timer(0.1f);
+    public float Knockback = 500;
+    public float KnockbackDuration = 0.2f;
 
     GameObject mCAC;
     GameObject mAOE;
     GameObject mLaser;
     GameObject mProjectileSpawn;
 
-    MeshRenderer mMeshRenderer;
+    SkinnedMeshRenderer mSkinnedRenderer;
 
     Enemy.Type mCurrentProjectileType;
     int mMaxProjectileType;
 
-    // Start is called before the first frame update
+    Color[] colors;
+
+    Force mKnockback = null;
+
     void Start()
     {
         mCAC = transform.Find("CAC").gameObject;
@@ -28,7 +71,7 @@ public class Player : MonoBehaviour
         mLaser = transform.Find("Laser").gameObject;
         mProjectileSpawn = transform.Find("ProjectileSpawn").gameObject;
 
-        mMeshRenderer = transform.Find("RealRender").GetComponent<MeshRenderer>();
+        mSkinnedRenderer = transform.Find("RealRender").GetComponentInChildren<SkinnedMeshRenderer>();
 
         mCAC.SetActive(false);
         mAOE.SetActive(false);
@@ -36,34 +79,65 @@ public class Player : MonoBehaviour
 
         mCurrentProjectileType = Enemy.Type.None;
         mMaxProjectileType = 3;
+
+        colors = new Color[mSkinnedRenderer.materials.Length];
+
+        for (int i = 0; i < mSkinnedRenderer.materials.Length; ++i) 
+        {
+            colors[i] = mSkinnedRenderer.materials[i].color;
+        }
     }
 
     void Update()
     {
         Invincibility.Update();
         ProjectileIntervalShoot.Update();
+
+        if(AttackColor.Update())
+        {
+            ResetColor();
+        }
+
+        if (mKnockback != null) 
+        {
+            bool end = mKnockback.Update(transform);
+
+            if (end)
+                mKnockback = null;
+        }
+
         HandleInput();
     }
 
     private void HandleInput()
     {
-        //Sticks
-        Vector3 moveDirection = InputManager.GetLeftStick();
-        Vector3 lookDirection = InputManager.GetRightStick();
-        if (moveDirection.magnitude < 0.5f)
-            moveDirection = Vector3.zero;
+        if (mKnockback == null)
+        {        
+            //Sticks
+            Vector3 moveDirection = InputManager.GetLeftStick();
+            Vector3 lookDirection = InputManager.GetRightStick();
+            if (moveDirection.magnitude < 0.5f)
+            {
+                GetComponentInChildren<Animator>().SetTrigger("TriggerIdle");
+                moveDirection = Vector3.zero;
+            }
+            else 
+            {
+                GetComponentInChildren<Animator>().SetTrigger("TriggerRun");
+            }
 
-        if (lookDirection.magnitude < 0.1f)
-            lookDirection = moveDirection;
+            if (lookDirection.magnitude < 0.1f)
+                lookDirection = moveDirection;
 
-        moveDirection.Normalize();
-        lookDirection.Normalize();
+            moveDirection.Normalize();
+            lookDirection.Normalize();
 
-        LookAt(lookDirection);
+            LookAt(lookDirection);
 
-        Vector3 velocity = moveDirection * Speed;
+            Vector3 velocity = moveDirection * Speed;
 
-        GetComponent<Rigidbody>().velocity = velocity;
+            GetComponent<Rigidbody>().velocity = velocity;
+        }
 
         if (Input.GetButtonDown("RB"))
         {
@@ -111,7 +185,24 @@ public class Player : MonoBehaviour
 
         Debug.Log(materials[(int)type].ToString());
 
-        mMeshRenderer.materials[2].color = materials[(int)type].color;
+        colors[2] = materials[(int)type].color;
+        mSkinnedRenderer.materials[2].color = materials[(int)type].color;
+    }
+
+    private void SetColor(Color color) 
+    {
+        for (int i = 0; i < mSkinnedRenderer.materials.Length; ++i) 
+        {
+            mSkinnedRenderer.materials[i].color = color;
+        }
+    }
+
+    private void ResetColor() 
+    {
+        for (int i = 0; i < mSkinnedRenderer.materials.Length; ++i)
+        {
+            mSkinnedRenderer.materials[i].color = colors[i];
+        }
     }
 
     private void IncrementMaxProjectileType() 
@@ -133,10 +224,15 @@ public class Player : MonoBehaviour
 
         enemy.Attack();
 
-        //player take damage and knockback
         Vector3 direction = (transform.position - collision.transform.position).normalized;
 
-        GetComponent<Rigidbody>().AddForce(direction * Knockback, ForceMode.Impulse);
+        //GetComponent<Rigidbody>().AddForce(direction * Knockback, ForceMode.Impulse);
+
+        mKnockback = new Force(new Vector2(direction.x, direction.z), Knockback, KnockbackDuration);
+
+        AttackColor.Start();
+
+        SetColor(GameManager.Instance.Red.color);
 
         Invincibility.Start();
     }
